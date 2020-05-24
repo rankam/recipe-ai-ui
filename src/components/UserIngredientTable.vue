@@ -1,11 +1,14 @@
 <template>
   <div>
+  <div class="table-container" style="border: 1px solid #eee; border-radius:2px">
   <el-table
-    :data="this.$store.getters.search(this, search, 'common_ingredient', 'userCommonIngredients.results')"
-    style="width: 100%">
+    :data="this.$store.getters.search(this, search, 'display_name', 'userCommonIngredients.results')"
+    style="width: 100%"
+    >
     <el-table-column
       label="Name"
-      prop="common_ingredient"
+      prop="display_name"
+      width="300px"
       >
     </el-table-column>
     <el-table-column
@@ -32,16 +35,19 @@
   <div class="block">
   <el-pagination
     layout="prev, next"
-    :total="66"
-    :page-size="8"
+    :total="this.$store.state.userCommonIngredients.count"
+    :page-size="10"
     @next-click="handleNextClick"
     @prev-click="handlePreviousClick">
-  </el-pagination>
+  </el-pagination> 
+</div>
 </div>
 </div>
 </template>
 
+<style>
 
+</style>
 <script>
 
   export default {

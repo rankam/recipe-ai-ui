@@ -1,17 +1,13 @@
 <template>
   <div>
-    <div>
-      <el-input-number 
-        :value="this.$store.state.allowedMissingIngredients" 
-        @change="handleNumberInputChange" 
-        :min="0" 
-        :max="5"
-        size="mini"></el-input-number>
-    </div>
+
+  <div class="table-container" style="border: 1px solid #eee; border-radius:2px">
+
   <el-table
-    :data="this.$store.getters.search(this, search, 'name', 'userAvailableRecipes.results')"
+    :data="this.$store.getters.search(this, search, 'name', 'userAvailableRecipes.results').slice(this.one, this.two)"
     style="width: 100%"
-    @cell-click="handleCellClick">
+    @cell-click="handleCellClick"
+    v-loading="this.$store.state.userAvailableRecipeTableLoading">
     <el-table-column
       label="Name"
       prop="name"
@@ -26,7 +22,12 @@
       label="Calories"
       prop="calories"
       >
-    </el-table-column>        
+    </el-table-column> 
+    <el-table-column
+      label="Protein"
+      prop="protein"
+      >
+    </el-table-column>            
     <el-table-column
       align="right"> 
     <!-- eslint-disable -->
@@ -52,7 +53,7 @@
   <div class="block">
     <el-pagination
       layout="prev, next"
-      :total="66"
+      :total="this.$store.state.userAvailableRecipes.count"
       :page-size="10"
       @next-click="handleNextClick"
       @prev-click="handlePreviousClick"
@@ -60,15 +61,23 @@
     </el-pagination>
   </div>   
   </div>   
+  </div>   
 </template>
 
 
 <script>
+// import debounce from 'debounce';
 
   export default {
+    created: function() {
+      // this.handleSearch = debounce(this.handleSearch, 100)
+    },
     data() {
       return {
         search: '',
+        page: 0,
+        one: 0,
+        two: 10,
       }
     },
     methods: {
@@ -77,11 +86,6 @@
         this.$router.push(`/recipe/${row.id}`)
       },
       /* eslint-enable */
-      handleNumberInputChange(val) {
-          this.$store.commit('setAllowedMissingIngredient', val)
-          this.$store.dispatch('fetchUserAvailableRecipes', this)
-
-      },
       handleEdit(scope) {
         console.log(scope.$index, scope.row.common_ingredient);
       },      
@@ -89,13 +93,20 @@
         console.log(scope.$index, scope.row);
       },
       handleNextClick: function() {
-          this.$store.dispatch('fetchNextUserAvailableRecipes', this)
+          // this.$store.dispatch('fetchNextUserAvailableRecipes', this)
+        this.page = this.page + 1
+        this.one = this.page * 10
+        this.two = (this.page * 10) + 10
       },
       handlePreviousClick: function() {
-          this.$store.dispatch('fetchPreviousUserAvailableRecipes', this)
+          this.page = this.page - 1
+          this.one = this.page * 10
+          this.two = (this.page * 10) + 10
+          // this.$store.dispatch('fetchPreviousUserAvailableRecipes', this)
       },
       handleSearch: function() {
-        this.$store.dispatch('searchAndFetchUserAvailableRecipes', {vm: this, searchTerm: this.search})        
+        // this.$store.dispatch('searchAndFetchUserAvailableRecipes', {vm: this, searchTerm: this.search})
+
       }    
     },
   }

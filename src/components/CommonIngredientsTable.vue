@@ -1,11 +1,13 @@
 <template>
-  <div>
+  
+    <div class="table-container" style="border: 1px solid #eee; border-radius:2px">
   <el-table
-    :data="this.$store.getters.search(this, search, 'label', 'allCommonIngredients.results')"
+    :data="this.$store.getters.search(this, search, 'display_name', 'allCommonIngredients.results')"
     style="width: 100%">
     <el-table-column
       label="Name"
-      prop="label"
+      prop="display_name"
+      width="300px"
       >
     </el-table-column>
     <el-table-column
@@ -40,7 +42,9 @@
 </div>
 </template>
 
+<style>
 
+</style>
 <script>
     // this.$store.state.allCommonIngredients.results.filter(data => !search || data.label.toLowerCase().includes(search.toLowerCase()))
 

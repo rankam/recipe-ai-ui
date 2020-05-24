@@ -1,10 +1,12 @@
 <template>
+  <div class="table-container" style="border: 1px solid #eee; border-radius:2px">
   <el-table
     :data="this.$store.getters.search(this, search, 'name', 'userSelectedRecipe.ingredients')"
     style="width: 100%">
     <el-table-column
       label="Name"
-      prop="name"
+      prop="display_name"
+      width="250px"
       >
     </el-table-column>
     <el-table-column
@@ -17,21 +19,21 @@
       prop="units">
     </el-table-column> 
     <el-table-column
-      label="Units Type"
+      label="Type"
       prop="unit_type">
     </el-table-column>
-    <el-table-column
+<!--     <el-table-column
       label="Calories"
-      prop="nuts.calories">
-    </el-table-column>     
-    <el-table-column
+      prop="nuts.calories"> 
+    </el-table-column>  -->    
+<!--     <el-table-column
       label="Protein"
       prop="nuts.protein">
-    </el-table-column>               
-    <el-table-column
+    </el-table-column>   -->             
+<!--     <el-table-column
       label="Confidence"
       prop="confidence">
-    </el-table-column>       
+    </el-table-column>  -->      
     <el-table-column
       align="right"> 
     <!-- eslint-disable -->
@@ -45,14 +47,15 @@
         <el-button
           size="mini"
           @click="handleEdit(scope)">Edit</el-button>
-        <el-button
+<!--         <el-button
           size="mini"
           type="danger"
-          @click="handleDelete(scope)">Delete</el-button>
+          @click="handleDelete(scope)">Delete</el-button> -->
       </template>
           <!--eslint-enable-->
     </el-table-column>
   </el-table> 
+</div>
 </template>
 
 
@@ -64,14 +67,7 @@
         search: ''
       }
     },
-    mounted: function() {
-      const recipeId = this.$router.history.current.params.id;
-      let recipe = this.$store.getters.recipe(recipeId);
-      if (recipe != null) {
-        this.$store.commit('setUserSelectedRecipe', recipe)
-      } else {
-        this.$store.dispatch('fetchUserSelectedRecipe', {vm: this, recipeId})
-      }      
+    mounted: function() {     
     },
     methods: {
       handleEdit(scope) {

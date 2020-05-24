@@ -1,15 +1,18 @@
 <template>
   <div class="split-view">
-  <el-row type="flex" class="row-bg">
-  <el-col :span="12"><div class="grid-content"><h2 style="text-align: left">All Ingredients</h2></div></el-col>
-  <el-col :span="1"><div class="grid-content"></div></el-col>
-  <el-col :span="12"><div class="grid-content"><h2 style="text-align: left">My Ingredients</h2></div></el-col>
+  <el-row type="flex" class="row-bg" :gutter="40">
+  <el-col :span="6"><div class="grid-content"><h2 style="text-align: left">All Ingredients</h2></div></el-col>
+  <el-col :span="6"><div class="grid-content" style="text-align: right;margin-top: 2.83em;">{{this.$store.state.allCommonIngredients.count}} Ingredients</div></el-col>  
+  <el-col :span="6"><div class="grid-content"><h2 style="text-align: left">My Ingredients</h2></div></el-col>
+   <el-col :span="6"><div class="grid-content" style="text-align: right;margin-top: 2.83em;">{{this.$store.state.userCommonIngredients.count}} Ingredients Available</div></el-col> 
 </el-row>
 
-  <el-row type="flex" class="row-bg">
+  <el-row type="flex" class="row-bg" :gutter="40">
   <el-col :span="12" class="list-view"><div class="grid-content"><CommonIngredientsTable /></div></el-col>
-  <el-col :span="1"><div class="grid-content"></div></el-col>
   <el-col :span="12" class="list-view"><div class="grid-content"><UserIngredientTable /></div></el-col>
+
+
+
 </el-row>
 </div>
 </template>
@@ -33,11 +36,4 @@ export default {
 }
 </script>
 
-<style>
-.list-view {
-    border: 1px solid #ebebeb;
-    border-radius: 3px;
-    transition: .2s;
-}
-</style>
     

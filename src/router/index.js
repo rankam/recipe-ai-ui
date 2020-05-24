@@ -8,7 +8,8 @@ import Nutrition from '../views/Nutrition.vue'
 import MealPlanner from '../views/MealPlanner.vue'
 import CommonIngredientsList from '../views/CommonIngredientsList.vue'
 import CommonIngredientsUserCommonIngredientsListView from '../views/CommonIngredientsUserCommonIngredientsListView.vue'
-
+import UserAvailableRecipesAddRecipeView from '../views/UserAvailableRecipesAddRecipeView.vue'
+import RecipeFormView from '../views/RecipeFormView.vue'
 
 Vue.use(VueRouter)
 
@@ -53,7 +54,16 @@ Vue.use(VueRouter)
     name: 'CommonIngredientsList',
     component: CommonIngredientsList
   },           
-
+  {
+    path: '/recipe-form',
+    name: 'RecipeFormView',
+    component: RecipeFormView
+  },
+  {
+    path: '/user-availabe-add-recipe',
+    name: 'UserAvailableRecipesAddRecipeView',
+    component: UserAvailableRecipesAddRecipeView
+  },     
 ]
 
 const router = new VueRouter({

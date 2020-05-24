@@ -1,20 +1,31 @@
 <template>
     <div class="recipe-content">
-        <h2>Available Recipes ({{this.$store.state.userAvailableRecipes.count}})</h2>
-        <UserAvailableRecipesTable />
+      <el-row type="flex" class="row-bg">
+      <el-col :span="12"><div class="grid-content"><h2 style="text-align: left">{{this.$store.state.userAvailableRecipes.count}} Available Recipes</h2></div></el-col>
+      <el-col :span="1">
+        <div class="grid-content">    
+        </div>
+      </el-col>
+      <el-col :span="12"><div class="grid-content" style="text-align: right;margin-top: 1.83em;"><AllowedMissingIngredientsNumberInput /></div></el-col>
+      </el-row>       
+        <UserAvailableRecipesTable />        
     </div>
 </template>
 
 <script>
 import UserAvailableRecipesTable from '@/components/UserAvailableRecipesTable'
+import AllowedMissingIngredientsNumberInput from '@/components/AllowedMissingIngredientsNumberInput'
 
 export default {
   name: 'UserAvailableRecipes',
   components: {
+    AllowedMissingIngredientsNumberInput,
     UserAvailableRecipesTable
   },
-  created: function() {
-    this.$store.dispatch('fetchUserAvailableRecipes', this)
+  mounted: function() {
+    if (this.$store.state.userAvailableRecipes.results.length === 0) {
+      this.$store.dispatch('fetchUserAvailableRecipes', this)  
+    }
   },
   data: function() {
     return {
@@ -28,25 +39,3 @@ export default {
 }
 </script>
  
-<style>
-  .text {
-    font-size: 14px;
-  }
-
-  .item {
-    margin-bottom: 18px;
-  }
-
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: "";
-  }
-  .clearfix:after {
-    clear: both
-  }
-
-  .box-card {
-    width: 480px;
-  }
-</style>
