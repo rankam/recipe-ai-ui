@@ -23,7 +23,7 @@
         </template>
         <el-menu-item-group>
           <router-link to="/recipe-form">
-            <el-menu-item index="2-1">
+            <el-menu-item index="2-1" style="margin-top: -20px">
             <span style="font-size: 10pt"><i class="sub-icon el-icon-notebook-2"></i>
             <span> Add Recipe</span></span>
             </el-menu-item>

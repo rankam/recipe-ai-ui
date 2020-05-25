@@ -2,10 +2,11 @@
   <div class="table-container" style="border: 1px solid #eee; border-radius:2px">
   <el-table
     :data="this.$store.getters.search(this, search, 'name', 'userSelectedRecipe.ingredients')"
-    style="width: 100%">
+    style="width: 100%"
+    :highlight-current-row=true  >
     <el-table-column
       label="Name"
-      prop="display_name"
+      prop="name"
       width="250px"
       >
     </el-table-column>
@@ -35,7 +36,9 @@
       prop="confidence">
     </el-table-column>  -->      
     <el-table-column
-      align="right"> 
+      align="right"
+      width="180"
+    > 
     <!-- eslint-disable -->
       <template slot="header" slot-scope="scope">
         <el-input
@@ -47,10 +50,10 @@
         <el-button
           size="mini"
           @click="handleEdit(scope)">Edit</el-button>
-<!--         <el-button
+        <el-button
           size="mini"
           type="danger"
-          @click="handleDelete(scope)">Delete</el-button> -->
+          @click="handleDelete(scope)">Delete</el-button>
       </template>
           <!--eslint-enable-->
     </el-table-column>
@@ -62,19 +65,38 @@
 <script>
 
   export default {
+    props: {
+      edit: Boolean
+    },
     data() {
       return {
-        search: ''
+        search: '',
+        editProp: this.edit,
       }
     },
     mounted: function() {     
     },
     methods: {
       handleEdit(scope) {
-        console.log(scope.$index, scope.row.common_ingredient);
+        // console.log(scope.$index, scope.row.common_ingredient);
+        console.log(scope.row)
+        const ing = this.$store.getters.ingredientRecipe(scope.row.id)
+        console.log('ing is', ing)
+        if (this.editProp === true) {
+            this.$store.commit('setUserSelectedIngredient', ing)  
+        } else {
+            this.$store.commit('setUserNewIngredient', ing)  
+        }
+        
+        // this.$store.commit('setUserNewIngredientName', ing.name)
+
       },
       handleDelete(scope) {
-        console.log(scope.$index, scope.row);
+        this.$store.dispatch('removeIngredientRecipe', {
+          vm: this, 
+          recipe_id: this.$store.state.userSelectedRecipe.id, 
+          ingredient_id: scope.row.id
+        })
       }
     },
   }

@@ -1,27 +1,41 @@
 <template>
   <div class="recipe">
-  <el-row type="flex" class="row-bg">
-  <el-col :span="12"><div class="grid-content"><h2 style="text-align: left">{{ this.$store.state.userSelectedRecipe.name }}</h2></div></el-col>
-  <el-col :span="1"><div class="grid-content"></div></el-col>
-  <el-col :span="12">
-    <div class="grid-content" style="text-align: right;margin-top: 2.83em;">
-
-      {{this.$store.state.userSelectedRecipe.calories}} Calories
-    </div>
-  </el-col>
-</el-row>     
-    
-    <RecipeIngredientTable />     
+  <el-row type="flex" class="row-bg" :gutter=40>
+    <el-col :span="12">
+        <div class="grid-content" style="text-align: left">
+          <h2>{{this.$store.state.userSelectedRecipe.name}}</h2>
+        </div>
+    </el-col> 
+    <el-col :span="12">
+      <div class="grid-content" style="text-align: left">
+        <h2>Ingredients</h2>
+      </div>
+    </el-col> 
+  </el-row>
+  <el-row type="flex" class="row-bg" :gutter=40>
+    <el-col :span="12">
+      <div class="grid-content">  
+        <RecipeForm v-bind:edit=true />
+      </div>
+    </el-col>
+    <el-col :span="12">
+      <div class="grid-content">
+        <RecipeIngredientTable v-bind:edit=true />
+      </div>
+    </el-col>
+  </el-row>
   </div>
 </template>
 
 <script>
+import RecipeForm from '@/components/RecipeForm'
 import RecipeIngredientTable from '@/components/RecipeIngredientTable'
 
 export default {
   name: 'Recipe',
   components: {
-    RecipeIngredientTable
+    RecipeIngredientTable,
+    RecipeForm
   },
   data() {
     return {

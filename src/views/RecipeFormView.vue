@@ -5,8 +5,8 @@
   <el-col :span="12"><div class="grid-content" style="text-align: left"><h2>{{this.$store.state.userSelectedRecipe.name}} Ingredients</h2></div></el-col> 
   </el-row>    
   <el-row type="flex" :gutter=40 class="row-bg">
-  <el-col :span="12"><div class="grid-content"><RecipeForm /></div></el-col> 
-  <el-col :span="12"><div class="grid-content"><RecipeIngredientTable /></div></el-col>
+  <el-col :span="12"><div class="grid-content"><RecipeForm v-bind:edit=false /></div></el-col> 
+  <el-col :span="12"><div class="grid-content"><RecipeIngredientTable v-bind:edit=false /></div></el-col>
   </el-row>
   </div>
 </template>
@@ -23,6 +23,8 @@ export default {
   },
   mounted: function() {
     this.$store.commit('resetUserSelectedRecipe')
+    this.$store.commit('resetUserNewRecipe')
+    this.$store.commit('resetUserSelectedIngredient')
     this.$store.commit('resetUserNewIngredient')
   },
   methods: {  

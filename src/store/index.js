@@ -148,6 +148,73 @@ export default new Vuex.Store({
       ingredients: []
     },
 
+    userSelectedIngredient: {
+      id: null,
+      name: '',
+      common_ingredient: {
+      nutrients: [
+                  {
+                        name: "Protein",
+                        amount: null,
+                        unit_type: "G",
+                        common_ingredient_id: ""
+                  },
+                  {
+                        name: "Total lipid (fat)",
+                        amount: null,
+                        unit_type: "G",
+                        common_ingredient_id: ""
+                  },
+                  {
+                        name: "Carbohydrate, by difference",
+                        amount: null,
+                        unit_type: "G",
+                        common_ingredient_id: ""
+                  },
+                  {
+                        name: "Potassium, K",
+                        amount: null,
+                        unit_type: "MG",
+                        common_ingredient_id: ""
+                  },
+                  {
+                        name: "Fatty acids, total saturated",
+                        amount: null,
+                        unit_type: "G",
+                        common_ingredient_id: ""
+                  },
+                  {
+                        name: "Fatty acids, total monounsaturated",
+                        amount: null,
+                        unit_type: "G",
+                        common_ingredient_id: ""
+                  },
+                  {
+                        name: "Fatty acids, total polyunsaturated",
+                        amount: null,
+                        unit_type: "G",
+                        common_ingredient_id: ""
+                  },
+                  {
+                        name: "Sugars, total including NLEA",
+                        amount: null,
+                        unit_type: "G",
+                        common_ingredient_id: ""
+                  },
+                  {
+                        name: "Energy",
+                        amount: null,
+                        unit_type: "KCAL",
+                        common_ingredient_id: ""
+                  }
+        ],
+      },
+      display_name: '',
+      confidence: '',
+      units: '',
+      unit_type: ''      
+    },
+
     // MISSING INGREDIENTS
     allowedMissingIngredients: 1
   },
@@ -169,6 +236,7 @@ export default new Vuex.Store({
 
     resetUserNewIngredient (state) {
       state.userNewIngredient = {
+        id: null,
         name: '',
         common_ingredient: {
         nutrients: [
@@ -233,7 +301,75 @@ export default new Vuex.Store({
         units: '',
         unit_type: ''
       }
-    },        
+    }, 
+
+    resetUserSelectedIngredient (state) {
+      state.userSelectedIngredient = {
+        name: '',
+        common_ingredient: {
+        nutrients: [
+                    {
+                          name: "Protein",
+                          amount: null,
+                          unit_type: "G",
+                          common_ingredient_id: ""
+                    },
+                    {
+                          name: "Total lipid (fat)",
+                          amount: null,
+                          unit_type: "G",
+                          common_ingredient_id: ""
+                    },
+                    {
+                          name: "Carbohydrate, by difference",
+                          amount: null,
+                          unit_type: "G",
+                          common_ingredient_id: ""
+                    },
+                    {
+                          name: "Potassium, K",
+                          amount: null,
+                          unit_type: "MG",
+                          common_ingredient_id: ""
+                    },
+                    {
+                          name: "Fatty acids, total saturated",
+                          amount: null,
+                          unit_type: "G",
+                          common_ingredient_id: ""
+                    },
+                    {
+                          name: "Fatty acids, total monounsaturated",
+                          amount: null,
+                          unit_type: "G",
+                          common_ingredient_id: ""
+                    },
+                    {
+                          name: "Fatty acids, total polyunsaturated",
+                          amount: null,
+                          unit_type: "G",
+                          common_ingredient_id: ""
+                    },
+                    {
+                          name: "Sugars, total including NLEA",
+                          amount: null,
+                          unit_type: "G",
+                          common_ingredient_id: ""
+                    },
+                    {
+                          name: "Energy",
+                          amount: null,
+                          unit_type: "KCAL",
+                          common_ingredient_id: ""
+                    }
+          ],
+          display_name: ''
+        },
+        confidence: '',
+        units: '',
+        unit_type: ''
+      }
+    },            
 
     setUserNewRecipeName (state, name) {
       state.userNewRecipe.name = name;
@@ -242,6 +378,10 @@ export default new Vuex.Store({
     setUserNewRecipe (state, recipe) {
       state.userNewRecipe = recipe;
     },    
+
+    setUserSelectedIngredient (state, ingredient) {
+      state.userSelectedIngredient = ingredient
+    },
 
     // ALL COMMON INGREDIENTS
     setAllCommonIngredients (state, commonIngredients) {
@@ -279,8 +419,11 @@ export default new Vuex.Store({
       state.userNewIngredient = ingredient 
     },
 
+    setUserNewIngredientCommonIngredient (state, commonIngredient) {
+      state.userNewIngredient.common_ingredient = commonIngredient
+    },    
+
     setUserNewIngredientName (state, name) {
-      console.log('asdf')
       state.userNewIngredient.name = name 
     }    
 
@@ -550,6 +693,29 @@ export default new Vuex.Store({
           })        
       },
 
+      removeIngredientRecipe ({commit}, obj) {
+        let options =   {
+            headers: {'Content-type': 'application/json'},
+            params: {
+              ingredient_id: obj.ingredient_id, 
+            },
+            recipe_id: obj.recipe_id,
+            ingredient_id: obj.ingredient_id,            
+            withCredentials: true
+        };
+        obj.vm.$http.delete(`${this.state.userAddIngredientRecipeURL.replace('RECIPEID',obj.recipe_id)}`, options)
+          .then((rsp) => {
+            if (rsp.status == 200) {
+              obj.vm.$notify({
+                title: 'Ingredient Removed',
+                message: '',
+                type: 'success'
+              });    
+              commit('setUserSelectedRecipe', rsp.data)
+            }
+          }).catch((err) => console.log('error ', err))
+      },        
+
       createIngredient ({commit}, obj) {
         let options =   {
             headers: {'Content-type': 'application/json'},
@@ -577,7 +743,7 @@ export default new Vuex.Store({
           .then(function(rsp) {
             if (rsp.data.confidence > .96) {
               console.log(rsp.data)
-              commit('setUserNewIngredient', rsp.data)              
+              commit('setUserNewIngredientCommonIngredient', rsp.data.common_ingredient)              
               return rsp.data  
             }
           })        
@@ -598,7 +764,10 @@ export default new Vuex.Store({
       } catch (err) {
         return 
       }
-    }     
+    },
+    ingredientRecipe: (state) => (ingredientId) => {
+      return state.userSelectedRecipe.ingredients.find((ingredient) => ingredient.id == ingredientId)
+    }
   },
   modules: {
   }
