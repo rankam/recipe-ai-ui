@@ -29,7 +29,7 @@ export default {
 }
 .table-container {
   box-shadow: 0 0 8px 0 rgba(232,237,250,.6), 0 2px 4px 0 rgba(232,237,250,.5);
-  border: 1px solid #ebebeb;
+  border: 1px solid #ebebeb; 
   border-radius: 3px;
   transition: .2s;  
 }
